@@ -53,6 +53,6 @@ app.get("/meta", (_, res) => {
   res.json({ patch, tempComps });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("listening on port 3000");
+app.listen(process.env.PORT || 54321, () => {
+  console.log("listening on port 54321");
 });
