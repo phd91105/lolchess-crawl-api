@@ -7,7 +7,7 @@ const url = "https://lolchess.gg/meta";
 const html = await axios.get(url);
 const $ = cheerio.load(html.data);
 
-const array = [];
+const tempComps = [];
 $(".guide-meta__deck-box").each((_, element) => {
   const champs = [];
   const teamName = $(element)
@@ -45,11 +45,12 @@ $(".guide-meta__deck-box").each((_, element) => {
     });
     champs.push({ champName, champCost, champImg, itemList });
   });
-  array.push({ teamName, teamStatus, minCost, champs, traitLst });
+  tempComps.push({ teamName, teamStatus, minCost, champs, traitLst });
 });
+const patch = $(".guide-meta__tab__item").text().trim();
 
-app.get("/", (req, res) => {
-  res.json(array);
+app.get("/", (_, res) => {
+  res.json({ patch, tempComps });
 });
 
 app.listen(process.env.PORT || 3000, () => {
