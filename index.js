@@ -26,7 +26,8 @@ $(".guide-meta__deck-box").each((_, element) => {
   const traitLst = [];
   traits.each((_, element) => {
     const trait = "https://lolchess.gg/" + $(element).find("img").attr("src");
-    traitLst.push(trait);
+    const hexagonType = $(element).attr("class").split("--")[1];
+    traitLst.push({ trait, hexagonType });
   });
   const minCost = $(element).find(".guide-meta__deck > .cost").text().trim();
   const champLst = $(element).find(".tft-champion-box");
