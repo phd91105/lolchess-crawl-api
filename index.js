@@ -49,7 +49,7 @@ $(".guide-meta__deck-box").each((_, element) => {
 });
 const patch = $(".guide-meta__tab__item").text().trim();
 
-app.get("/", (_, res) => {
+app.get("/meta", (_, res) => {
   res.json({ patch, tempComps });
 });
 
