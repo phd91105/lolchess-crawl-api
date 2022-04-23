@@ -45,7 +45,7 @@ $(".guide-meta__deck-box").each((_, element) => {
     });
     champs.push({ champName, champCost, champImg, itemList });
   });
-  tempComps.push({ teamName, teamStatus, minCost, champs, traitLst });
+  teamComps.push({ teamName, teamStatus, minCost, champs, traitLst });
 });
 const patch = $(".guide-meta__tab__item").text().trim();
 
