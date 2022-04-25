@@ -50,7 +50,7 @@ $(".guide-meta__deck-box").each((_, element) => {
 const patch = $(".guide-meta__tab__item").text().trim();
 
 app.get("/meta", (_, res) => {
-  res.json({ patch, teamComps });
+  res.status(200).json({ patch, teamComps });
 });
 
 app.listen(process.env.PORT || 54321, () => {
