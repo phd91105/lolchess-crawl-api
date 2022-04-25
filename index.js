@@ -37,13 +37,13 @@ $(".guide-meta__deck-box").each((_, element) => {
     const champName = $(element).find(".tft-champion > .name").text();
     const champCost = $(element).find(".tft-champion > .cost").text();
     const items = $(element).find(".tft-items > img");
-    const itemList = [];
+    const itemLst = [];
     items.each((_, element) => {
       const itemName = $(element).attr("alt");
       const itemImg = "https:" + $(element).attr("src");
-      itemList.push({ itemName, itemImg });
+      itemLst.push({ itemName, itemImg });
     });
-    champs.push({ champName, champCost, champImg, itemList });
+    champs.push({ champName, champCost, champImg, itemLst });
   });
   teamComps.push({ teamName, teamStatus, minCost, champs, traitLst });
 });
