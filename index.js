@@ -1,13 +1,19 @@
 import express from "express";
 import * as cheerio from "cheerio";
 import axios from "axios";
+import { Client } from "redis-om";
+import * as dotenv from "dotenv";
+import { CronJob } from 'cron';
+
+dotenv.config();
+const client = new Client();
 
 const app = express();
 const url = "https://lolchess.gg/meta";
 const html = await axios.get(url);
 const $ = cheerio.load(html.data);
 
-function getData(query) {
+function getData() {
   let teamComps = [];
   $(".guide-meta__deck-box").each((_, element) => {
     const champs = [];
@@ -49,13 +55,28 @@ function getData(query) {
     teamComps.push({ teamName, teamStatus, minCost, champs, traitLst });
   });
   const patch = $(".guide-meta__tab__item").text().trim();
-  teamComps = query.limit ? teamComps.slice(0, query.limit) : teamComps;
   return { patch, teamComps };
 }
 
-app.get("/meta", (req, res) => {
-  const data = getData(req.query);
-  res.status(200).json(data);
+const job = new CronJob(
+  '1 * * * * *',
+  async function () {
+    await client.open(process.env.REDIS_URL);
+    const data = getData();
+    await client.jsonset("tftmeta", data);
+    await client.close();
+  },
+  null,
+  true,
+);
+
+job.start();
+
+app.get("/meta", async (req, res) => {
+  await client.open(process.env.REDIS_URL);
+  const data = await client.jsonget("tftmeta");
+  await client.close();
+  return res.status(200).json(data);
 });
 
 app.listen(process.env.PORT || 54321, () => {
